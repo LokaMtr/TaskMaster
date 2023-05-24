@@ -41,6 +41,7 @@ darktheme zodat het past bij de preferentie van de gebruiker.
 Het use case diagram kan je bij src/Sprint1/modellen/UseCaseDiagram.png zien. Hieonder bij elke use case een beschrijving
 
 Registreren:
+
 Als je de webapplicatie start zie je in
 Het midden van je scherm een vierkant
 met aan de bovenkant een stuk tekst met
@@ -52,17 +53,20 @@ Heb je nog geen account, druk je op register wat je de optie
 geeft om een nieuw account aan te maken.
 
 Inloggen:
+
 Als je bent geregistreerd dan kan je in de 2 tekstvakken je
 je Username en Password in vullen om vervolgens op de knop
 Login te drukken want je brengt naar het volgende scherm.
 
 Taak toevoegen:
+
 Als je de dag hebt gekozen waar je je taken wilt inplannen. Zie je onder de balk met de
 datum een tekst vak waar je de taakbeschrijving in kunt typen. Rechts van het tekst vak
 staat er een “voeg toe” knop. Als je daarop drukt wordt de tekst in het tekst vak
 verwijderd en verschijnt de taak in de eerste tabel “Todo”.
 
 Taak prioriteit geven:
+
 Als je weer op de 3 puntjes klikt naast de taak zie je ook de optie om de taak een
 prioriteit te geven, je kan dan kiezen tussen “High” of “low”. Als je High hebt gekozen
 dan verschijnt er een rood dun balkje onder je taak, kies je low dan een blauw dun balkje
@@ -70,6 +74,7 @@ onder je taak. Je kan er ook voor kiezen om helemaal geen prioriteiten te geven 
 taken en dan zijn er ook geen balkjes.
 
 Taak status aanpassen:
+
 Als je bezig bent met een taak kan je weer op de 3 puntjes klikken naast de taak en kan
 je drukken op “Change status” vervolgens druk je op Doing en dan word je taak
 verplaatst van de tabel Todo naar Doing. En als je klaar bent met je taak kan je precies
@@ -77,29 +82,34 @@ hetzelfde doen alleen kies je dan voor Done en dan wordt je taak verplaatst naar
 tabel Done.
 
 Taakbeschrijving aanpassen:
+
 Als je het toch niet eens bent met de beschrijving van je taak zie je rechts van je taak. 3
 puntjes waar je op kunt klikken. Als je erop hebt gedrukt krijg je 3 opties, 1 daarvan is de
 taakbeschrijving aanpassen. Als je vervolgens drukt op “Taakbeschrijving aanpassen” kan
 je de tekst van de taak veranderen en vervolgens weer bevestigen met een knop.
 
 Taak verwijderen:
+
 Naast de 3 puntjes staat ook een “x” icoontje waar je op kunt klikken om de taak uit de
 lijst te verwijderen. Als je erop klikt komt er een stukje tekst met “’weetje zeker dat je
 deze taak wilt verwijderen”, dan krijg je de optie ja of nee. En aan de hand van de keuze
 die je dan maakt wordt de taak verwijderd of niet.
 
 Wisselen van dag:
+
 Als je eenmaal bent ingelogd kom je op de pagina waar je boven aan een balk ziet met
 de huidige datum. En zie je ook 2 buttons, eentje aan de linker kant en eentje aan de
 rechter kant van de balk (<-, ->). Je kunt via die 2 knoppen veranderen van dag.
 
 Kleurenthema aanpassen:
+
 Rechtsonder op de pagina krijg je de optie om het thema van Lightmode naar Darkmode
 aan te passen. Dat kan of door 2 verschillende buttons of door een toggle box.
 
 
 # 3.1 Actoren
 Actor: User
+
 Beschrijving: De gebruiker is een persoon die interactie heeft met het systeem. De gebruiker maakt gebruik van de functionaliteiten van het systeem om taken uit te voeren. De gebruiker kan ook voorkeuren configureren.
 
 
