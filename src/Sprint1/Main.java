@@ -9,9 +9,9 @@ public class Main {
 
         // Create tasks
         TaskBusinessLayer taskBusinessLayer = new TaskBusinessLayer();
-        taskBusinessLayer.addTask("Task 1", Task.Priority.HIGH);
-        taskBusinessLayer.addTask("Task 2", Task.Priority.LOW);
-        taskBusinessLayer.addTask("Task 3", Task.Priority.HIGH);
+        taskBusinessLayer.addTask("Boodschappen doen", Task.Priority.HIGH);
+        taskBusinessLayer.addTask("Werken", Task.Priority.LOW);
+        taskBusinessLayer.addTask("Voetballen", Task.Priority.HIGH);
 
         // Assign tasks to a specific date
         taskBusinessLayer.assignTaskToDay(0, LocalDate.of(2023, 5, 24));
@@ -22,6 +22,18 @@ public class Main {
         LocalDate date = LocalDate.of(2023, 5, 24);
         int taskCount = taskBusinessLayer.getTaskCountForDay(date);
         System.out.println("Task count for " + date + ": " + taskCount);
+
+        
+        // Voorbeelden van taakbewerkingen
+
+        // Voorbeeld 1: Taak verwijderen
+        taskBusinessLayer.removeTask(1); // Verwijder de taak op index 1
+
+        // Voorbeeld 2: Taakbeschrijving aanpassen
+        taskBusinessLayer.updateTaskDescription(0, "Naar de albertheijn gaan"); // Pas de taakbeschrijving van taak op index 0 aan
+
+        // Voorbeeld 3: Status van een taak veranderen
+        taskBusinessLayer.updateTaskStatus(2, Task.TaskStatus.DONE); // Verander de status van taak op index 2 naar DONE
 
         // Print task details
         List<Task> tasks = taskBusinessLayer.getTasksForDay(date);
@@ -38,5 +50,6 @@ public class Main {
             System.out.println("Username: " + user.getUsername());
             System.out.println("Password: " + user.getPassword());
         }
+
     }
 }

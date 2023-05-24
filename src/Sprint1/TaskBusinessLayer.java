@@ -53,4 +53,30 @@ public class TaskBusinessLayer {
             return Collections.emptyList();
         }
     }
+
+    public void removeTask(int taskIndex) {
+        if (taskIndex >= 0 && taskIndex < taskList.size()) {
+            Task removedTask = taskList.remove(taskIndex);
+            LocalDate assignedDate = removedTask.getAssignedDate();
+    
+            if (assignedDate != null && tasksByDate.containsKey(assignedDate)) {
+                tasksByDate.get(assignedDate).remove(removedTask);
+            }
+        }
+    }
+    
+    public void updateTaskDescription(int taskIndex, String newDescription) {
+        if (taskIndex >= 0 && taskIndex < taskList.size()) {
+            Task task = taskList.get(taskIndex);
+            task.setDescription(newDescription);
+        }
+    }
+    
+    public void updateTaskStatus(int taskIndex, Task.TaskStatus newStatus) {
+        if (taskIndex >= 0 && taskIndex < taskList.size()) {
+            Task task = taskList.get(taskIndex);
+            task.setStatus(newStatus);
+        }
+    }
+    
 }
