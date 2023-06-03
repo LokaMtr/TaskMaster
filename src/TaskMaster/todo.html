@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>TaskMaster</title>
+  <link rel="stylesheet" type="text/css" href="/src/TaskMaster/css-todo/styles.css">
+</head>
+<body class="dark">
+  <header>
+    <h1>TaskMaster</h1>
+    <div class="task-input">
+      <input id="taskInput" type="text" placeholder="Voeg een taak toe">
+      <input id="dateInput" type="date">
+      <select id="prioritySelect">
+        <option value="high">Hoog</option>
+        <option value="medium">Gemiddeld</option>
+        <option value="low">Laag</option>
+      </select>
+      <button onclick="addTask()">Toevoegen</button>
+    </div>
+  </header>
+  
+  <div class="container">
+    <div id="todo" class="table">
+      <h2>Todo</h2>
+      <ul id="todoList" ondrop="drop(event, 'todo')" ondragover="allowDrop(event)"></ul>
+    </div>
+  
+    <div id="doing" class="table">
+      <h2>Doing</h2>
+      <ul id="doingList" ondrop="drop(event, 'doing')" ondragover="allowDrop(event)"></ul>
+    </div>
+  
+    <div id="done" class="table">
+      <h2>Done</h2>
+      <ul id="doneList" ondrop="drop(event, 'done')" ondragover="allowDrop(event)"></ul>
+    </div>
+  </div>
+  
+  <div id="themeToggle" class="theme-toggle">
+    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
+    <label for="themeCheckbox"></label>
+  </div>
+  
+  <script src="todoscript.js"></script>
+</body>
+</html>

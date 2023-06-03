@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login Pagina</title>
+  <link rel="stylesheet" type="text/css" href="/src/TaskMaster/css-login/style.css">
+</head>
+<body>
+  <div class="container" id="login-container">
+    <h1>Login</h1>
+    <form id="login-form">
+      <input type="text" id="username" placeholder="Gebruikersnaam" required>
+      <input type="password" id="password" placeholder="Wachtwoord" required>
+      <button type="submit">Inloggen</button>
+    </form>
+    <p>Nog geen account? <a href="#" id="register-link">Registreer hier</a></p>
+  </div>
+
+  <div class="container hidden" id="register-container">
+    <h1>Registratie</h1>
+    <form id="register-form">
+      <input type="text" id="new-username" placeholder="Nieuwe gebruikersnaam" required>
+      <input type="password" id="new-password" placeholder="Nieuw wachtwoord" required>
+      <button type="submit">Registreren</button>
+    </form>
+    <p>Heb je al een account? <a href="#" id="login-link">Log hier in</a></p>
+  </div>
+
+  <div class="theme-switch">
+    <input type="checkbox" id="theme-toggle">
+    <label for="theme-toggle"></label>
+  </div>
+
+  <script src="src/TaskMaster/script.js"></script>
+</body>
+</html>
