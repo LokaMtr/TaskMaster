@@ -51,7 +51,7 @@ registerForm.addEventListener('submit', function (e) {
         loginContainer.classList.remove('hidden');
         registerContainer.classList.add('hidden');
       } else {
-        alert('Registratie mislukt. Probeer het opnieuw.');
+        alert(result.message);
       }
     })
     .catch(error => {
@@ -64,19 +64,24 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
   const username = document.getElementById('username').value;
   const password = document.getElementById('password').value;
 
+  const data = {
+    username: username,
+    password: password
+  };
+
   fetch('/login', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify(data)
   })
     .then(response => response.json())
     .then(result => {
       if (result.success) {
         window.location.href = '/todo.html';
       } else {
-        alert('Ongeldige gebruikersnaam of wachtwoord.');
+        alert(result.message);
       }
     })
     .catch(error => {

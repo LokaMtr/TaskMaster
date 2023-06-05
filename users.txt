@@ -1,0 +1,30 @@
+[
+  {
+    "username": "loka",
+    "password": "loka123"
+  },
+  {
+    "username": "malak",
+    "password": "123"
+  },
+  {
+    "username": "opo",
+    "password": "123"
+  },
+  {
+    "username": "apa",
+    "password": "123"
+  },
+  {
+    "username": "wowwo",
+    "password": "123"
+  },
+  {
+    "username": "LOKA",
+    "password": "123"
+  },
+  {
+    "username": "test",
+    "password": "123"
+  }
+]
