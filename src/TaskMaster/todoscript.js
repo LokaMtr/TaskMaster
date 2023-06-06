@@ -42,20 +42,20 @@ function addTask() {
   dateInput.value = '';
 }
 
-function moveTask(event) {
-  const listItem = event.target.parentNode.parentNode;
-  const currentList = listItem.parentNode;
-  const targetList = currentList.id === 'todoList' ? document.getElementById('doingList') : document.getElementById('doneList');
+// function moveTask(event) {
+//   const listItem = event.target.parentNode.parentNode;
+//   const currentList = listItem.parentNode;
+//   const targetList = currentList.id === 'todoList' ? document.getElementById('doingList') : document.getElementById('doneList');
 
-  if (targetList.id === 'doneList') {
-    listItem.querySelector('.move-task-btn').style.display = 'none';
-  } else {
-    listItem.querySelector('.move-task-btn').style.display = 'block';
-  }
+//   if (targetList.id === 'doneList') {
+//     listItem.querySelector('.move-task-btn').style.display = 'none';
+//   } else {
+//     listItem.querySelector('.move-task-btn').style.display = 'block';
+//   }
 
-  currentList.removeChild(listItem);
-  targetList.appendChild(listItem);
-}
+//   currentList.removeChild(listItem);
+//   targetList.appendChild(listItem);
+// }
 
 function toggleTheme() {
   const body = document.body;
@@ -63,13 +63,30 @@ function toggleTheme() {
 
   currentTheme = currentTheme === 'light' ? 'dark' : 'light';
   const themeToggle = document.getElementById('themeToggle');
-  themeToggle.innerHTML = `
-    <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
-    <label for="themeCheckbox"></label>
-  `;
 
-  const themeCheckbox = themeToggle.querySelector('input');
+  const themeCheckbox = document.createElement('input');
+  themeCheckbox.setAttribute('type', 'checkbox');
+  themeCheckbox.setAttribute('id', 'themeCheckbox');
+  themeCheckbox.setAttribute('onchange', 'toggleTheme()');
   themeCheckbox.checked = currentTheme === 'light';
+
+  const label = document.createElement('label');
+  label.setAttribute('for', 'themeCheckbox');
+
+  themeToggle.innerHTML = '';
+  themeToggle.appendChild(themeCheckbox);
+  themeToggle.appendChild(label);
+
+  // Wissel de afbeelding van het logo
+  const logo = document.getElementById('logo');
+  const lightThemeLogoPath = '/src/TaskMaster/modellen/LogoWit.png';
+  const darkThemeLogoPath = '/src/TaskMaster/modellen/LogoGrijs.png';
+
+  if (currentTheme === 'light') {
+    logo.src = lightThemeLogoPath;
+  } else {
+    logo.src = darkThemeLogoPath;
+  }
 }
 
 function editTask(event) {
@@ -86,3 +103,45 @@ function deleteTask(event) {
   const listItem = event.target.parentNode.parentNode;
   listItem.parentNode.removeChild(listItem);
 }
+
+function moveTask(event) {
+  const listItem = event.target.parentNode.parentNode;
+  const currentList = listItem.parentNode;
+  const targetList = currentList.id === 'todoList' ? document.getElementById('doingList') : document.getElementById('doneList');
+
+  if (targetList.id === 'doneList') {
+    listItem.querySelector('.move-task-btn').style.display = 'none';
+  } else {
+    listItem.querySelector('.move-task-btn').style.display = 'block';
+  }
+
+  // Bereken de afstand tussen de lijsten
+  const distance = targetList.getBoundingClientRect().left - currentList.getBoundingClientRect().left;
+
+  // Voeg een CSS-klasse toe om de animatie te activeren
+  listItem.classList.add('moving');
+
+  // Transformeer het item naar de juiste positie met een overgang
+  listItem.style.transform = `translateX(${distance}px)`;
+
+  // Wacht tot de volgende verfbeurt om de overgang te activeren
+  requestAnimationFrame(function () {
+    // Verwijder het item uit de huidige lijst
+    currentList.removeChild(listItem);
+
+    // Transformeer het item terug naar de oorspronkelijke positie zonder overgang
+    listItem.style.transform = '';
+
+    // Wacht op de volgende verfbeurt om de overgang naar de doellijst te activeren
+    requestAnimationFrame(function () {
+      // Voeg het item toe aan de doellijst met een overgang
+      targetList.appendChild(listItem);
+
+      // Wacht op de voltooiing van de overgang en verwijder de CSS-klasse
+      listItem.addEventListener('transitionend', function () {
+        listItem.classList.remove('moving');
+      }, { once: true });
+    });
+  });
+}
+

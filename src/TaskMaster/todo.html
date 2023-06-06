@@ -6,7 +6,9 @@
 </head>
 <body class="dark">
   <header>
-    <h1>TaskMaster</h1>
+    <h1>
+      <img id="logo" src="/src/TaskMaster/modellen/LogoGrijs.png" alt="Logo" />
+    </h1>
     <div class="task-input">
       <input id="taskInput" type="text" placeholder="Voeg een taak toe">
       <input id="dateInput" type="date">
@@ -20,6 +22,8 @@
   </header>
   
   <div class="container">
+    <h2 id="welcomeMessage"></h2> <!-- Element toegevoegd voor de welkomstboodschap -->
+    
     <div id="todo" class="table">
       <h2>Todo</h2>
       <ul id="todoList" ondrop="drop(event, 'todo')" ondragover="allowDrop(event)"></ul>
@@ -42,5 +46,15 @@
   </div>
   
   <script src="todoscript.js"></script>
+  <script>
+    // Haal de gebruikersnaam op uit de opgeslagen sessiegegevens
+    var userName = sessionStorage.getItem('username');
+
+    // Zoek het element waarin je de welkomstboodschap wilt weergeven
+    var welcomeElement = document.getElementById("welcomeMessage");
+
+    // Stel de tekst van het element in op "Welkom [naam van de gebruiker]"
+    welcomeElement.textContent = "Welkom " + userName;
+  </script>
 </body>
 </html>

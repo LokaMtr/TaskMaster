@@ -1,147 +1,146 @@
 body {
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    max-width: 300px;
-    margin: 100px auto;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  h1 {
-    text-align: center;
-  }
-  
-  form {
-    display: flex;
-    flex-direction: column;
-  }
-  
-  input[type="text"],
-  input[type="password"] {
-    margin-bottom: 10px;
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-  }
-  
-  button {
-    padding: 10px;
-    border: none;
-    border-radius: 3px;
-    cursor: pointer;
-  }
-  
-  p {
-    text-align: center;
-  }
-  
-  .hidden {
-    display: none;
-  }
-  
-  .theme-switch {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    display: flex;
-    align-items: center;
-  }
-  
-  .theme-switch label {
-    display: inline-block;
-    width: 40px;
-    height: 20px;
-    background-color: #666;
-    border-radius: 10px;
-    position: relative;
-  }
-  
-  .theme-switch label:after {
-    content: "";
-    display: block;
-    width: 16px;
-    height: 16px;
-    background-color: #fff;
-    border-radius: 50%;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    transition: transform 0.2s ease-in-out;
-  }
-  
-  .theme-switch input[type="checkbox"] {
-    display: none;
-  }
-  
-  /* Donker thema */
-  body {
-    background-color: #222;
-    color: #fff;
-  }
-  
-  .container {
-    background-color: #333;
-  }
-  
-  button {
-    background-color: #444;
-    color: #fff;
-  }
-  
-  .theme-switch label {
-    background-color: #666;
-  }
-  
-  .theme-switch input[type="checkbox"]:checked + label {
-    background-color: #666;
-  }
-  
-  .theme-switch input[type="checkbox"]:checked + label:after {
-    transform: translateX(20px);
-  }
-  
-  /* Licht thema */
-  .light-theme {
-    background-color: #f5f5f5;
-    color: #222;
-  }
-  
-  .light-theme .container {
-    background-color: #f5f5f5;
-    color: #222;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-  }
-  
-  .light-theme button {
-    background-color: #eee;
-    color: #222;
-  }
-  
-  .light-theme .theme-switch label {
-    background-color: #ccc;
-  }
-  
-  .light-theme .theme-switch label:after {
-    background-color: #222;
-  }
-  
-  .light-theme input[type="text"],
-  .light-theme input[type="password"] {
-    background-color: #f5f5f5;
-    color: #222;
-  }
-  
-  .container {
-    max-width: 400px;
-    position: absolute;
-    top: 30%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 90%;
-  }
-  
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 300px;
+  margin: 100px auto;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+  text-align: center;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input[type="text"],
+input[type="password"] {
+  margin-bottom: 10px;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+}
+
+button {
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+p {
+  text-align: center;
+}
+
+.hidden {
+  display: none;
+}
+
+.theme-switch {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  display: flex;
+  align-items: center;
+}
+
+.theme-switch label {
+  display: inline-block;
+  width: 40px;
+  height: 20px;
+  background-color: #666;
+  border-radius: 10px;
+  position: relative;
+}
+
+.theme-switch label:after {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.theme-switch input[type="checkbox"] {
+  display: none;
+}
+
+/* Donker thema */
+body {
+  background-color: #252526;
+  color: #fff;
+}
+
+.container {
+  background-color: #1e1e1e;
+}
+
+button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.theme-switch label {
+  background-color: #b3b3b3;
+}
+
+.theme-switch input[type="checkbox"]:checked + label {
+  background-color: #b3b3b3;
+}
+
+.theme-switch input[type="checkbox"]:checked + label:after {
+  transform: translateX(20px);
+}
+
+/* Licht thema */
+.light-theme {
+  background-color: #f5f5f5;
+  color: #121212;
+}
+
+.light-theme .container {
+  background-color: #fff;
+  color: #121212;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.light-theme button {
+  background-color: #007bff;
+  color: #fff;
+}
+
+.light-theme .theme-switch label {
+  background-color: #b3b3b3;
+}
+
+.light-theme .theme-switch label:after {
+  background-color: #121212;
+}
+
+.light-theme input[type="text"],
+.light-theme input[type="password"] {
+  background-color: #f5f5f5;
+  color: #121212;
+}
+
+.container {
+  max-width: 400px;
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 90%;
+}
