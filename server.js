@@ -2,70 +2,126 @@ const express = require('express');
 const app = express();
 const path = require('path');
 const bodyParser = require('body-parser');
-const fs = require('fs');
+const { Client } = require('pg');
+const bcrypt = require('bcrypt');
+const password = require('./password');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 // Statische bestanden (HTML, CSS, JS)
-app.use(express.static(path.join(__dirname, '../TaskMaster')));
+const staticFilesPath = path.join(__dirname, '../TaskMaster');
+app.use(express.static(staticFilesPath));
+
+// PostgreSQL databaseverbinding
+const dbConfig = {
+  user: 'postgres',
+  host: 'localhost',
+  database: 'TaskMaster',
+  password: password,
+  port: 5432,
+};
+
+const client = new Client(dbConfig);
+client.connect();
 
 // Registratiegegevens opslaan en lezen
-let users = [];
+function saveUser(username, password) {
+  bcrypt.hash(password, 10, (err, hash) => {
+    if (err) {
+      console.error('Fout bij hashen wachtwoord:', err);
+      return;
+    }
 
-function saveUsers() {
-  const data = JSON.stringify(users, null, 2);
-  fs.writeFileSync(path.join(__dirname, 'users.txt'), data, 'utf8');
+    const insertUserQuery = 'INSERT INTO users (username, password) VALUES ($1, $2)';
+    const insertUserValues = [username, hash];
+    client.query(insertUserQuery, insertUserValues)
+      .then(() => {
+        console.log('Gebruiker opgeslagen in de database.');
+      })
+      .catch(error => {
+        console.error('Fout bij opslaan gebruiker:', error);
+      });
+  });
 }
 
-function loadUsers() {
-  try {
-    const data = fs.readFileSync(path.join(__dirname, 'users.txt'), 'utf8');
-    users = JSON.parse(data);
-  } catch (error) {
-    users = [];
-  }
+function checkUserCredentials(username, password) {
+  const selectUserQuery = 'SELECT * FROM users WHERE username = $1';
+  const selectUserValues = [username];
+  return client.query(selectUserQuery, selectUserValues)
+    .then(result => {
+      const user = result.rows[0];
+      if (!user) {
+        return { success: false, message: 'Ongeldige gebruikersnaam of wachtwoord.' };
+      }
+
+      // Vergelijk de gehashte wachtwoorden met bcrypt.compare
+      return bcrypt.compare(password, user.password)
+        .then(match => {
+          if (match) {
+            return { success: true };
+          } else {
+            return { success: false, message: 'Ongeldige gebruikersnaam of wachtwoord.' };
+          }
+        });
+    })
+    .catch(error => {
+      console.error('Fout bij ophalen gebruiker:', error);
+      return { success: false, message: 'Er is een fout opgetreden.' };
+    });
 }
+
 
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
 
   // Controleer of de gebruikersnaam al bestaat
-  const existingUser = users.find(user => user.username === username);
-  if (existingUser) {
-    res.json({ success: false, message: 'Gebruikersnaam bestaat al.' });
-    return;
-  }
-
-  users.push({ username, password });
-  saveUsers();
-  res.json({ success: true, message: 'Registratie succesvol!' });
+  const checkUserQuery = 'SELECT id FROM users WHERE username = $1';
+  const checkUserValues = [username];
+  client.query(checkUserQuery, checkUserValues)
+    .then(result => {
+      if (result.rows.length > 0) {
+        res.json({ success: false, message: 'Gebruikersnaam bestaat al.' });
+      } else {
+        saveUser(username, password);
+        res.json({ success: true, message: 'Registratie succesvol!' });
+      }
+    })
+    .catch(error => {
+      console.error('Fout bij controle gebruikersnaam:', error);
+      res.json({ success: false, message: 'Er is een fout opgetreden.' });
+    });
 });
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  // Zoek de gebruiker op basis van de gebruikersnaam
-  const user = users.find(user => user.username === username);
+  console.log('Ontvangen inloggegevens:', username, password);
 
-  if (!user || user.password !== password) {
-    res.json({ success: false, message: 'Ongeldige gebruikersnaam of wachtwoord.' });
-    return;
-  }
+  checkUserCredentials(username, password)
+    .then(result => {
+      console.log('Inlogresultaat:', result);
 
-  res.json({ success: true });
+      if (result.success) {
+        res.json({ success: true, redirectToTodo: true });
+      } else {
+        res.json(result);
+      }
+    })
+    .catch(error => {
+      console.error('Fout bij inloggen:', error);
+      res.json({ success: false, message: 'Er is een fout opgetreden.' });
+    });
 });
 
-const staticFilesPath = path.join(__dirname, 'src/TaskMaster');
-app.use(express.static(staticFilesPath));
+// Serveer todo.html
+const todoFilesPath = path.join(__dirname, '../TaskMaster/src/TaskMaster');
+app.use(express.static(todoFilesPath));
 
 // Fallback naar login.html voor andere routes
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/src/TaskMaster/login.html'));
+  res.sendFile(path.join(__dirname, '../TaskMaster/src/TaskMaster/login.html'));
 });
-
-// Laden van gebruikers bij het starten van de server
-loadUsers();
 
 // Start de server
 const port = 3000;

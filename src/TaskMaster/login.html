@@ -7,7 +7,7 @@
 <body>
   <div class="container" id="login-container">
     <h1>Login</h1>
-    <form id="login-form">
+    <form id="login-form" method="post" action="login.php">
       <input type="text" id="username" placeholder="Gebruikersnaam" required>
       <input type="password" id="password" placeholder="Wachtwoord" required>
       <button type="submit">Inloggen</button>
@@ -30,8 +30,10 @@
     <label for="theme-toggle"></label>
   </div>
 
+
   <script src="script.js"></script>
   <script src="client.js"></script>
+  <script src="login.html"></script>
   <script>
     // Voeg een eventlistener toe aan het inlogformulier om de gebruikersnaam op te slaan bij succesvolle inlogpoging
     document.getElementById("login-form").addEventListener("submit", function(event) {

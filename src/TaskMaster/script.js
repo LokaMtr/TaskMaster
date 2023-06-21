@@ -83,3 +83,4 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
       console.error('Fout bij inloggen:', error);
     });
 });
+
