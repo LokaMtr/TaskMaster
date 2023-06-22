@@ -96,7 +96,7 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
-  console.log('Ontvangen inloggegevens:', username, password);
+  // console.log('Ontvangen inloggegevens:', username, password);
 
   checkUserCredentials(username, password)
     .then(result => {

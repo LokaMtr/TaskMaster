@@ -1,0 +1,4 @@
+{
+    "appService.defaultWebAppToDeploy": "undefined/subscriptions/2c4e3ac8-b335-4cd6-bb41-7144cdd3a4a5/resourceGroups/LokaMtr-rg/providers/Microsoft.Web/sites/LokaMtr",
+    "appService.deploySubpath": "."
+}
