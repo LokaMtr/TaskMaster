@@ -1,11 +1,13 @@
+import {password} from "./password";
 const { Client } = require('pg');
+
 
 // Verbindingsgegevens voor de PostgreSQL-database
 const config = {
     user: 'postgres',
     host: 'localhost',
     database: 'TaskMaster',
-    password: '0684284771',
+    password: password,
     port: 5432,
 };
 
@@ -37,14 +39,13 @@ async function processLogin(username, password) {
     }
 }
 
-// Voorbeeldgebruik van de functie
 const exampleUsername = 'voorbeeldgebruiker';
 const examplePassword = 'voorbeeldwachtwoord';
 
 processLogin(exampleUsername, examplePassword);
 
 
-// login.js
+
 document.getElementById('loginForm').addEventListener('submit', function(event) {
     event.preventDefault();
   
@@ -61,7 +62,6 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
       if (data.success && data.redirectToTodo) {
         window.location.href = '/todo.html';
       } else {
-        // Handleer andere situaties
       }
     });
   });
