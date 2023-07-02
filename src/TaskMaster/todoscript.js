@@ -14,9 +14,49 @@ function addTask() {
   }
 
   const listItem = document.createElement('li');
+
+  // Converteer de datumstring naar een datumobject
+  const dateObject = new Date(date);
+
+  // Controleer of de datum geldig is
+  if (isNaN(dateObject.getTime())) {
+    alert('Voer een geldige datum in');
+    return;
+  }
+
+  // Zet de datum om naar een geldige database-indeling (YYYY-MM-DD)
+  const formattedDate = dateObject.toISOString().split('T')[0];
+
+  // Stuur de taakgegevens naar de server
+  const taskData = {
+    username: sessionStorage.getItem('username'),
+    task: task,
+    date: formattedDate,
+    priority: priority
+  };
+
+  fetch('/addTask', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(taskData)
+  })
+    .then(response => response.json())
+    .then(result => {
+      if (result.success) {
+        console.log('Taak opgeslagen in de database.');
+      } else {
+        console.error('Fout bij opslaan taak:', result.message);
+      }
+    })
+    .catch(error => {
+      console.error('Fout bij communiceren met de server:', error);
+    });
+
   listItem.innerHTML = `
     <span class="task">${task}</span>
-    <span class="date">${date}</span>
+    <span class="date">${formattedDate}</span>
     <div class="action-buttons">
       <button class="edit-btn" onclick="editTask(event)">✎</button>
       <button class="delete-btn" onclick="deleteTask(event)">✕</button>
@@ -41,6 +81,7 @@ function addTask() {
   taskInput.value = '';
   dateInput.value = '';
 }
+
 
 function toggleTheme() {
   const body = document.body;
@@ -126,4 +167,28 @@ function moveTask(event) {
     });
   });
 }
+// Functie om de knopstijlen toe te passen
+function applyButtonStyles(button) {
+  button.classList.add("edit-btn");
+  button.innerHTML = `
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24">
+      <path fill="#fff" d="M12 0a12 12 0 1012 12A12.014 12.014 0 0012 0zm6 14.086l-1.086 1.084-5-5L7 12l1.914 1.914L12 16.828l4-4z"/>
+    </svg>
+  `;
+}
 
+// Voeg de knopstijlen toe aan de knoppen
+var editButtons = document.querySelectorAll('.edit-btn');
+editButtons.forEach(function(button) {
+  applyButtonStyles(button);
+});
+
+var deleteButtons = document.querySelectorAll('.delete-btn');
+deleteButtons.forEach(function(button) {
+  applyButtonStyles(button);
+});
+
+var moveButtons = document.querySelectorAll('.move-task-btn');
+moveButtons.forEach(function(button) {
+  applyButtonStyles(button);
+});

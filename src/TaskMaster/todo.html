@@ -44,12 +44,134 @@
     <input type="checkbox" id="themeCheckbox" onchange="toggleTheme()">
     <label for="themeCheckbox"></label>
   </div>
-  
   <script src="todoscript.js"></script>
   <script>
     var userName = sessionStorage.getItem('username');
     var welcomeElement = document.getElementById("welcomeMessage");
     welcomeElement.textContent = "Welkom " + userName + '!';
+
+    // Functie om alle taken van de ingelogde gebruiker op te halen en weer te geven
+    function displayTasks() {
+      // Stuur een AJAX-verzoek naar de server om taken op te halen
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          var tasks = JSON.parse(this.responseText);
+
+          // Voeg elke taak toe aan de todo-lijst
+          var todoList = document.getElementById("todoList");
+          tasks.forEach(function(task) {
+            var li = document.createElement("li");
+            li.classList.add("task");
+            li.classList.add(task.priority + "-priority");
+
+            var taskDescription = document.createElement("span");
+            taskDescription.classList.add("task-description");
+            taskDescription.textContent = task.task;
+
+            var taskDate = document.createElement("span");
+            taskDate.classList.add("task-date");
+            taskDate.textContent = task.date.split('T')[0]; // Extract the date part
+
+            var actionButtons = document.createElement("div");
+            actionButtons.classList.add("action-buttons");
+
+            var editButton = document.createElement("button");
+            editButton.classList.add("edit-btn");
+            editButton.textContent = "✏️";
+            editButton.addEventListener("click", editTask);
+
+            var deleteButton = document.createElement("button");
+            deleteButton.classList.add("delete-btn");
+            deleteButton.textContent = "❌";
+            deleteButton.addEventListener("click", deleteTask);
+
+            var moveButton = document.createElement("button");
+            moveButton.classList.add("move-task-btn");
+            moveButton.textContent = "➡️";
+            moveButton.addEventListener("click", moveTask);
+
+            actionButtons.appendChild(editButton);
+            actionButtons.appendChild(deleteButton);
+            actionButtons.appendChild(moveButton);
+
+            li.appendChild(taskDescription);
+            li.appendChild(taskDate);
+            li.appendChild(actionButtons);
+
+            todoList.appendChild(li);
+          });
+        }
+      };
+      xhttp.open("GET", "/tasks?username=" + encodeURIComponent(userName), true);
+      xhttp.send();
+    }
+
+    // Functie om een taak aan te passen
+    function editTask(event) {
+      const listItem = event.target.parentNode.parentNode;
+      const taskElement = listItem.querySelector('.task-description');
+      const newTask = prompt('Pas de taak aan', taskElement.textContent);
+
+      if (newTask !== null && newTask.trim() !== '') {
+        taskElement.textContent = newTask;
+      }
+    }
+
+
+    function deleteTask(event) {
+      const listItem = event.target.parentNode.parentNode;
+      const taskDescription = listItem.querySelector('.task-description').textContent;
+
+      // Stuur een AJAX-verzoek naar de backend om de taak te verwijderen
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+          // Taak succesvol verwijderd, verwijder het item uit de lijst
+          listItem.parentNode.removeChild(listItem);
+        }
+      };
+      xhttp.open("DELETE", "/deleteTask/" + encodeURIComponent(taskDescription), true);
+      xhttp.send();
+    }
+
+
+
+    // Functie om een taak te verplaatsen
+    function moveTask(event) {
+      const listItem = event.target.parentNode.parentNode;
+      const currentList = listItem.parentNode;
+      const targetList = currentList.id === 'todoList' ? document.getElementById('doingList') : document.getElementById('doneList');
+
+      if (targetList.id === 'doneList') {
+        listItem.querySelector('.move-task-btn').style.display = 'none';
+      } else {
+        listItem.querySelector('.move-task-btn').style.display = 'block';
+      }
+
+      const distance = targetList.getBoundingClientRect().left - currentList.getBoundingClientRect().left;
+
+      listItem.classList.add('moving');
+
+      listItem.style.transform = `translateX(${distance}px)`;
+
+      requestAnimationFrame(function () {
+        currentList.removeChild(listItem);
+
+        listItem.style.transform = '';
+
+        requestAnimationFrame(function () {
+          targetList.appendChild(listItem);
+
+          listItem.addEventListener('transitionend', function () {
+            listItem.classList.remove('moving');
+          }, { once: true });
+        });
+      });
+    }
+
+    // Roep de functie aan om taken weer te geven bij het laden van de pagina
+    displayTasks();
   </script>
 </body>
 </html>

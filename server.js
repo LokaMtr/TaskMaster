@@ -71,6 +71,99 @@ function checkUserCredentials(username, password) {
     });
 }
 
+// // Endpoint om alle taken van de huidige gebruiker op te halen
+// app.get('/tasks', (req, res) => {
+//   const username = req.query.username; // Haal de gebruikersnaam uit de queryparameters
+
+//   const selectTasksQuery = 'SELECT * FROM tasks WHERE username = $1';
+//   const selectTasksValues = [username];
+  
+//   client.query(selectTasksQuery, selectTasksValues)
+//     .then(result => {
+//       const tasks = result.rows;
+//       res.json(tasks);
+//     })
+//     .catch(error => {
+//       console.error('Fout bij ophalen taken:', error);
+//       res.status(500).json({ error: 'Er is een fout opgetreden bij het ophalen van taken.' });
+//     });
+// });
+
+// function saveTask(username, task, date, priority, status) {
+//   const insertTaskQuery = 'INSERT INTO tasks (username, task, date, priority, status) VALUES ($1, $2, $3, $4, $5)';
+//   const insertTaskValues = [username, task, date, priority, status];
+//   client.query(insertTaskQuery, insertTaskValues)
+//     .then(() => {
+//       console.log('Taak opgeslagen in de database.');
+//     })
+//     .catch(error => {
+//       console.error('Fout bij opslaan taak:', error);
+//     });
+// }
+
+
+// Endpoint om alle taken van de huidige gebruiker op te halen
+app.get('/tasks', (req, res) => {
+  const username = req.query.username; // Haal de gebruikersnaam uit de queryparameters
+
+  const selectTasksQuery = 'SELECT * FROM tasks WHERE username = $1';
+  const selectTasksValues = [username];
+  
+  client.query(selectTasksQuery, selectTasksValues)
+    .then(result => {
+      const tasks = result.rows;
+      res.json(tasks);
+    })
+    .catch(error => {
+      console.error('Fout bij ophalen taken:', error);
+      res.status(500).json({ error: 'Er is een fout opgetreden bij het ophalen van taken.' });
+    });
+});
+
+function saveTask(username, task, date, priority, status) {
+  const insertTaskQuery = 'INSERT INTO tasks (username, task, date, priority, status) VALUES ($1, $2, $3, $4, $5)';
+  const insertTaskValues = [username, task, date, priority, status || 'todo']; // Gebruik 'todo' als standaardwaarde als status niet is opgegeven
+  client.query(insertTaskQuery, insertTaskValues)
+    .then(() => {
+      console.log('Taak opgeslagen in de database.');
+    })
+    .catch(error => {
+      console.error('Fout bij opslaan taak:', error);
+    });
+}
+
+// Endpoint om een nieuwe taak toe te voegen
+app.post('/addTask', (req, res) => {
+  const { username, task, date, priority, status } = req.body; // Ontvang de taakgegevens van het verzoek
+
+  saveTask(username, task, date, priority, status); // Voeg de taak toe aan de database
+
+  res.json({ success: true });
+});
+
+function deleteTask(taskDescription) {
+  const deleteTaskQuery = 'DELETE FROM tasks WHERE task = $1';
+  const deleteTaskValues = [taskDescription];
+
+  client.query(deleteTaskQuery, deleteTaskValues)
+    .then(() => {
+      console.log('Taak verwijderd uit de database.');
+    })
+    .catch(error => {
+      console.error('Fout bij het verwijderen van de taak:', error);
+    });
+}
+
+
+app.delete('/deleteTask/:taskDescription', (req, res) => {
+  const { taskDescription } = req.params;
+
+  deleteTask(taskDescription); // Verwijder de taak uit de database
+
+  res.json({ success: true });
+});
+
+
 
 app.post('/register', (req, res) => {
   const { username, password } = req.body;
@@ -97,6 +190,42 @@ app.post('/login', (req, res) => {
   const { username, password } = req.body;
 
   // console.log('Ontvangen inloggegevens:', username, password);
+
+  checkUserCredentials(username, password)
+    .then(result => {
+      console.log('Inlogresultaat:', result);
+
+      if (result.success) {
+        res.json({ success: true, redirectToTodo: true });
+      } else {
+        res.json(result);
+      }
+    })
+    .catch(error => {
+      console.error('Fout bij inloggen:', error);
+      res.json({ success: false, message: 'Er is een fout opgetreden.' });
+    });
+});
+
+// // Endpoint voor het toevoegen van een taak
+// app.post('/addTask', (req, res) => {
+//   // Ontvang de taakgegevens van het verzoek
+//   const { username, task, date, priority } = req.body;
+
+//   // Voeg de taak toe aan de database zonder de "id" kolom op te geven
+//   client.query('INSERT INTO tasks (username, task, date, priority) VALUES ($1, $2, $3, $4)', [username, task, date, priority], (error, result) => {
+//     if (error) {
+//       console.error('Fout bij opslaan taak:', error);
+//       res.json({ success: false, message: 'Fout bij opslaan taak' });
+//     } else {
+//       console.log('Taak opgeslagen in de database.');
+//       res.json({ success: true });
+//     }
+//   });
+// });
+
+app.post('/login', (req, res) => {
+  const { username, password } = req.body;
 
   checkUserCredentials(username, password)
     .then(result => {

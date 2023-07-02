@@ -235,3 +235,14 @@ li {
   font-size: 24px;
   font-weight: bold;
 }
+.task {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.task-date {
+  float: right;
+  color: white;
+  font-size: inherit;
+  margin-left: 5px;
+}
