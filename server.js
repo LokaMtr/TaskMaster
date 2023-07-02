@@ -163,6 +163,25 @@ app.delete('/deleteTask/:taskDescription', (req, res) => {
   res.json({ success: true });
 });
 
+// Endpoint om een taak bij te werken
+app.put('/updateTask', (req, res) => {
+  const { currentTask, newTask, username } = req.body; // Ontvang de taakgegevens van het verzoek
+
+  // Voer de updateoperatie uit in de database
+  const updateTaskQuery = 'UPDATE tasks SET task = $1 WHERE task = $2 AND username = $3';
+  const updateTaskValues = [newTask, currentTask, username];
+  client.query(updateTaskQuery, updateTaskValues, (error, result) => {
+    if (error) {
+      console.error('Fout bij het bijwerken van de taak:', error);
+      res.sendStatus(500);
+    } else {
+      console.log('Taak bijgewerkt in de database.');
+      res.sendStatus(200);
+    }
+  });
+});
+
+
 
 
 app.post('/register', (req, res) => {

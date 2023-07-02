@@ -111,12 +111,35 @@
     function editTask(event) {
       const listItem = event.target.parentNode.parentNode;
       const taskElement = listItem.querySelector('.task-description');
-      const newTask = prompt('Pas de taak aan', taskElement.textContent);
+      const currentTask = taskElement.textContent;
+      const newTask = prompt('Pas de taak aan', currentTask);
 
       if (newTask !== null && newTask.trim() !== '') {
         taskElement.textContent = newTask;
+        updateTaskInDatabase(currentTask, newTask); // Roep de functie aan om de taak in de database bij te werken
       }
     }
+
+    // Functie om een taak bij te werken in de database
+    function updateTaskInDatabase(currentTask, newTask) {
+      // Stuur een AJAX-verzoek naar de server om de taak bij te werken
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+        if (this.readyState == 4) {
+          if (this.status == 200) {
+            console.log('Taak bijgewerkt in de database.');
+          } else {
+            console.error('Fout bij het bijwerken van de taak:', this.status);
+          }
+        }
+      };
+      xhttp.open("PUT", "/updateTask", true);
+      xhttp.setRequestHeader("Content-type", "application/json");
+      xhttp.send(JSON.stringify({ currentTask: currentTask, newTask: newTask, username: sessionStorage.getItem('username') }));
+    }
+
+
+
 
 
     function deleteTask(event) {
